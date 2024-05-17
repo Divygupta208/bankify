@@ -15,11 +15,11 @@ import { encryptId, extractCustomerIdFromUrl, parseStringify } from "../utils";
 // import { revalidatePath } from "next/cache";
 // import { addFundingSource, createDwollaCustomer } from "./dwolla.actions";
 
-// const {
-//   APPWRITE_DATABASE_ID: DATABASE_ID,
-//   APPWRITE_USER_COLLECTION_ID: USER_COLLECTION_ID,
-//   APPWRITE_BANK_COLLECTION_ID: BANK_COLLECTION_ID,
-// } = process.env;
+const {
+  APPWRITE_DATABASE_ID: DATABASE_ID,
+  APPWRITE_USER_COLLECTION_ID: USER_COLLECTION_ID,
+  APPWRITE_BANK_COLLECTION_ID: BANK_COLLECTION_ID,
+} = process.env;
 
 // export const getUserInfo = async ({ userId }: getUserInfoProps) => {
 //   try {
@@ -115,29 +115,28 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
 export async function getLoggedInUser() {
   try {
     const { account } = await createSessionClient();
-    // const result = await account.get();
+    const result = await account.get();
 
     // const user = await getUserInfo({ userId: result.$id });
-    const user = await account.get(); //added
 
-    return parseStringify(user);
+    return parseStringify(result);
   } catch (error) {
     console.log(error);
     return null;
   }
 }
 
-// export const logoutAccount = async () => {
-//   try {
-//     const { account } = await createSessionClient();
+export const logoutAccount = async () => {
+  try {
+    const { account } = await createSessionClient();
 
-//     cookies().delete("appwrite-session");
+    cookies().delete("appwrite-session");
 
-//     await account.deleteSession("current");
-//   } catch (error) {
-//     return null;
-//   }
-// };
+    await account.deleteSession("current");
+  } catch (error) {
+    return null;
+  }
+};
 
 // export const createLinkToken = async (user: User) => {
 //   try {
